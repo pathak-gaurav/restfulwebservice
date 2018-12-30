@@ -2,6 +2,7 @@ package com.spring.restfulwebservice.controller;
 
 import com.spring.restfulwebservice.dao.UsersDAO;
 import com.spring.restfulwebservice.entity.Users;
+import com.spring.restfulwebservice.exception.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -26,6 +27,10 @@ public class UsersController {
 
     @GetMapping("/users/{userId}")
     public Users getSingleUser(@PathVariable Long userId) {
+        Users user = dao.getUser(userId);
+        if (user == null) {
+            throw new UserNotFoundException("User Not Found -" + userId);
+        }
         return dao.getUser(userId);
     }
 
@@ -33,7 +38,7 @@ public class UsersController {
     public String deleteUser(@PathVariable Long userId) {
         Users user = dao.getUser(userId);
         if (user == null) {
-            throw new NullPointerException("User Not Found -" + userId);
+            throw new UserNotFoundException("User Not Found -" + userId);
         }
         dao.deleteUser(user);
         return "User Deleted -" + userId;
@@ -51,10 +56,9 @@ public class UsersController {
     public Users updateUsers(@RequestBody Users users) {
         Users user = dao.getUser(users.getUserId());
         if (user == null) {
-            throw new NullPointerException("User Not Found for update -" + users.getUserId());
+            throw new UserNotFoundException("User Not Found -" + users.getUserId());
         }
         dao.updateUsers(user);
-        return users;
+        return user;
     }
-
 }
