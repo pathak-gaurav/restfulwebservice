@@ -1,8 +1,10 @@
 package com.spring.restfulwebservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 //@JsonIgnoreProperties({"first","second"})
+@JsonFilter("some-filter")
 public class SomeBean {
 
     private String first;
