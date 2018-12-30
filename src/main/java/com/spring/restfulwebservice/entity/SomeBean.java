@@ -2,7 +2,7 @@ package com.spring.restfulwebservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties({"first","second"})
+//@JsonIgnoreProperties({"first","second"})
 public class SomeBean {
 
     private String first;
