@@ -2,8 +2,11 @@ package com.spring.restfulwebservice.controller;
 
 import com.spring.restfulwebservice.dao.UsersDAO;
 import com.spring.restfulwebservice.entity.Users;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -37,10 +40,11 @@ public class UsersController {
     }
 
     @PostMapping("/users")
-    public Users saveUser(@RequestBody Users users) {
+    public ResponseEntity<Object> saveUser(@RequestBody Users users) {
         users.setUserId(0L);
         dao.saveUser(users);
-        return users;
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(users.getUserId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/users")
